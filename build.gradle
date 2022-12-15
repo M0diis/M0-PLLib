@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+group 'me.m0dii'
+version '1.0.0'
+
+archivesBaseName = 'M0-PLLib'
+
+shadowJar {
+    minimize()
+
+    archiveFileName = "M0-PLLib-${version}.jar"
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    flatDir {
+        dirs 'libs'
+    }
+
+    maven {
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
