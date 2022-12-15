@@ -19,8 +19,6 @@ public class Utils {
             case 10 -> "X";
             default -> String.valueOf(level);
         };
-
-
     }
 
     public static String romanToArabic(String roman) {

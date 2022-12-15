@@ -55,8 +55,10 @@ public class TextUtils {
             lore = new ArrayList<>();
         }
 
-        for (String s : text) {
-            lore.add(colorize(s));
+        if(lore != null) {
+            for (String s : text) {
+                lore.add(colorize(s));
+            }
         }
 
         if (meta != null) {
@@ -72,5 +74,17 @@ public class TextUtils {
         }
 
         return ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    public static String formatted(String text, String... args) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+
+        for (int i = 0; i < args.length; i++) {
+            text = text.replace("{" + i + "}", args[i]);
+        }
+
+        return format(text);
     }
 }

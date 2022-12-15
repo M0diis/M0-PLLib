@@ -12,12 +12,20 @@ import java.util.logging.Level;
 
 public class ConfigManager {
     private final JavaPlugin instance;
-    private final String configFile = "config.yml";
+    private String configFile = "config.yml";
     private FileConfiguration dataConfig = null;
     private File dataConfigFile = null;
 
     public ConfigManager(JavaPlugin instance) {
         this.instance = instance;
+
+        this.saveDefaultConfig();
+    }
+
+    public ConfigManager(JavaPlugin instance, String configFile) {
+        this.instance = instance;
+
+        this.configFile = configFile;
 
         this.saveDefaultConfig();
     }
