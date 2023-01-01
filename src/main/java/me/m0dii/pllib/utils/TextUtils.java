@@ -46,6 +46,20 @@ public class TextUtils {
         return meta;
     }
 
+    public static ItemMeta lore(ItemMeta meta, List<String> text) {
+        List<Component> lore = new ArrayList<>();
+
+        for (String s : text) {
+            lore.add(colorize(s));
+        }
+
+        if (meta != null) {
+            meta.lore(lore);
+        }
+
+        return meta;
+    }
+
     public static ItemMeta lore(ItemMeta meta, boolean add, String... text) {
         List<Component> lore;
 
