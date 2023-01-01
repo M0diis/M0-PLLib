@@ -22,7 +22,7 @@ jobs:
       uses: actions/upload-artifact@v2-preview
       with:
         name: ${{ github.event.repository.name }}
-        path: artifacts/*.jar
+        path: build/libs/*.jar
     - name: Generate Dev Release
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
@@ -31,4 +31,4 @@ jobs:
         repo_token: "${{ secrets.ACC_TOKEN }}"
         title: "Development Build"
         files: |
-          artifacts/*.jar
+          build/libs/*.jar
