@@ -133,6 +133,10 @@ public class InventoryUtils {
         return Arrays.stream(inv.getContents()).noneMatch(i -> i != null && i.getType() != Material.AIR);
     }
 
+    public static boolean hasItem(Inventory inv, ItemStack item) {
+        return Arrays.stream(inv.getContents()).anyMatch(i -> i != null && i.isSimilar(item));
+    }
+
     public static ItemStack createItem(Material m, String name) {
         final ItemStack item = new ItemStack(m);
 
