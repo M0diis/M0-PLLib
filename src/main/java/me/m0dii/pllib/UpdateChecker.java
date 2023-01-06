@@ -4,22 +4,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Consumer;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.Scanner;
 
 public class UpdateChecker {
-    private final JavaPlugin instance;
+    private final JavaPlugin plugin;
     private final int resourceId;
 
     public UpdateChecker(JavaPlugin plugin, int resourceId) {
-        this.instance = plugin;
+        this.plugin = plugin;
         this.resourceId = resourceId;
     }
 
     public void getVersion(final Consumer<String> consumer) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.instance, () ->
+        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
         {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId)
                     .openStream();
@@ -30,7 +29,7 @@ public class UpdateChecker {
                     consumer.accept(scanner.next());
                 }
             } catch (IOException ex) {
-                instance.getLogger().warning("Failed to check for updates.");
+                plugin.getLogger().warning("Failed to check for updates.");
             }
         });
     }
@@ -38,7 +37,7 @@ public class UpdateChecker {
     public void isOutdated(final Consumer<Boolean> consumer) {
         getVersion(version ->
         {
-            String curr = instance.getDescription().getVersion();
+            String curr = plugin.getDescription().getVersion();
 
             if (!curr.equalsIgnoreCase(version.replace("v", ""))) {
                 consumer.accept(true);
@@ -46,5 +45,21 @@ public class UpdateChecker {
 
             consumer.accept(false);
         });
+    }
+
+    public void download() {
+        try {
+            String url = "https://api.spiget.org/v2/resources/ "  + resourceId + " /download";
+            URL url1 = new URL(url);
+            BufferedInputStream in = new BufferedInputStream(url1.openStream());
+            FileOutputStream fileOutputStream = new FileOutputStream("plugins" + File.separator + plugin.getName() + ".jar");
+            byte[] dataBuffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+                fileOutputStream.write(dataBuffer, 0, bytesRead);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
