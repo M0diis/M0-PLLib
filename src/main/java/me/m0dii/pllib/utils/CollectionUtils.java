@@ -2,10 +2,22 @@ package me.m0dii.pllib.utils;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 
 public class CollectionUtils {
+    public static <T> T getRandomElement(Collection<T> collection) {
+        return collection.stream()
+                .skip((int) (Math.random()*collection.size()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public static <T> T getRandomElement(T[] t) {
+        return t[(int) (Math.random()*t.length)];
+    }
+
     public static List<String> addStarting(List<String> list, String toMatch, String... toAdd) {
         if(list == null || toMatch == null || toAdd == null) {
             return list;

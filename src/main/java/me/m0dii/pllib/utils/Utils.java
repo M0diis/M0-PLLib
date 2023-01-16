@@ -5,6 +5,14 @@ import java.util.Random;
 public class Utils {
     private static final Random random = new Random();
 
+    public static boolean isOnCooldown(long cooldown, long lastUsed) {
+        return System.currentTimeMillis() - lastUsed < cooldown;
+    }
+
+    public static boolean isValidPlayerName(String in) {
+        return in.matches("[a-zA-Z0-9_]{3,16}");
+    }
+
     public static String arabicToRoman(int level) {
         return switch (level) {
             case 1 -> "I";

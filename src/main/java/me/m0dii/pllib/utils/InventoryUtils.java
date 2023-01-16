@@ -1,5 +1,6 @@
 package me.m0dii.pllib.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -7,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
@@ -15,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.UUID;
 
 public class InventoryUtils {
     private static final Random random = new Random();
@@ -147,6 +150,28 @@ public class InventoryUtils {
         }
 
         item.setItemMeta(itemMeta);
+
+        return item;
+    }
+
+    public static void applyCustomHeadTexture(ItemStack item, String texture) {
+        UUID hashAsId = new UUID(texture.hashCode(), texture.hashCode());
+        Bukkit.getUnsafe().modifyItemStack(item, "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + texture + "\"}]}}}");
+    }
+
+    public static ItemStack setTexture(ItemStack item, String texture) {
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta instanceof SkullMeta) {
+            if (Utils.isValidPlayerName(texture)) {
+                ((SkullMeta) meta).setOwner(texture);
+                return item;
+            }
+
+            applyCustomHeadTexture(item, texture);
+        }
+
+        item.setItemMeta(meta);
 
         return item;
     }
