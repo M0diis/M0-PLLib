@@ -8,8 +8,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TextUtils {
+    private static final Pattern HEX_PATTERN = Pattern.compile("#([A-Fa-f0-9])([A-Fa-f0-9])([A-Fa-f0-9])([A-Fa-f0-9])([A-Fa-f0-9])([A-Fa-f0-9])");
+
     public static String stripColor(Component component) {
         return ChatColor.stripColor(PlainTextComponentSerializer.plainText().serializeOr(component, ""));
     }
@@ -19,7 +22,10 @@ public class TextUtils {
             return Component.empty();
         }
 
-        return Component.text(ChatColor.translateAlternateColorCodes('&', text));
+        return Component.text(ChatColor.translateAlternateColorCodes(
+                '&',
+                HEX_PATTERN.matcher(text).replaceAll("&x&$1&$2&$3&$4&$5&$6")
+        ));
     }
 
     public static ItemMeta displayName(ItemMeta meta, String text) {
@@ -87,7 +93,10 @@ public class TextUtils {
             return "";
         }
 
-        return ChatColor.translateAlternateColorCodes('&', text);
+        return ChatColor.translateAlternateColorCodes(
+                '&',
+                HEX_PATTERN.matcher(text).replaceAll("&x&$1&$2&$3&$4&$5&$6")
+        );
     }
 
     public static String formatted(String text, String... args) {
