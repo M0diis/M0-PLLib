@@ -67,4 +67,14 @@ public class NumberUtils {
 
         return (int) (Math.random() * range) + min;
     }
+
+    public static int parseOr(String value, Runnable runnable) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            runnable.run();
+        }
+
+        return 0;
+    }
 }
