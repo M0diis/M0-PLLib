@@ -16,11 +16,24 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 public class InventoryUtils {
     private static final Random random = new Random();
+
+    private static final List<Material> CONTAINERS = List.of(
+            Material.CHEST,
+            Material.TRAPPED_CHEST,
+            Material.DISPENSER,
+            Material.DROPPER,
+            Material.SHULKER_BOX
+    );
+
+    public static boolean isContainer(ItemStack item) {
+        return CONTAINERS.contains(item.getType()) || item.getType().name().endsWith("_SHULKER_BOX");
+    }
 
     /**
      * Converts the player inventory to a Base64 encoded string.
