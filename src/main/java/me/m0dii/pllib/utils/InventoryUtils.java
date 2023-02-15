@@ -1,8 +1,13 @@
 package me.m0dii.pllib.utils;
 
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -15,10 +20,7 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class InventoryUtils {
     private static final Random random = new Random();
@@ -188,4 +190,99 @@ public class InventoryUtils {
 
         return item;
     }
+
+    public static boolean isTakeItemEvent(final InventoryClickEvent event) {
+        final Inventory inventory = event.getInventory();
+        final Inventory clickedInventory = event.getClickedInventory();
+        final InventoryAction action = event.getAction();
+
+        if (clickedInventory != null && clickedInventory.getType() == InventoryType.PLAYER || inventory.getType() == InventoryType.PLAYER) {
+            return false;
+        }
+
+        return action == InventoryAction.MOVE_TO_OTHER_INVENTORY || isTakeAction(action);
+    }
+
+    public static boolean isPlaceItemEvent(final InventoryClickEvent event) {
+        final Inventory inventory = event.getInventory();
+        final Inventory clickedInventory = event.getClickedInventory();
+        final InventoryAction action = event.getAction();
+
+        if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY
+                && clickedInventory != null && clickedInventory.getType() == InventoryType.PLAYER
+                && inventory.getType() != clickedInventory.getType()) {
+            return true;
+        }
+
+        return isPlaceAction(action)
+                && (clickedInventory == null || clickedInventory.getType() != InventoryType.PLAYER)
+                && inventory.getType() != InventoryType.PLAYER;
+    }
+
+    public static boolean isSwapItemEvent(final InventoryClickEvent event) {
+        Preconditions.checkNotNull(event, "event cannot be null");
+
+        final Inventory inventory = event.getInventory();
+        final Inventory clickedInventory = event.getClickedInventory();
+        final InventoryAction action = event.getAction();
+
+        return isSwapAction(action)
+                && (clickedInventory == null || clickedInventory.getType() != InventoryType.PLAYER)
+                && inventory.getType() != InventoryType.PLAYER;
+    }
+
+    public static boolean isDropItemEvent(final InventoryClickEvent event) {
+        Preconditions.checkNotNull(event, "event cannot be null");
+
+        final Inventory inventory = event.getInventory();
+        final Inventory clickedInventory = event.getClickedInventory();
+        final InventoryAction action = event.getAction();
+
+        return isDropAction(action)
+                && (clickedInventory != null || inventory.getType() != InventoryType.PLAYER);
+    }
+
+    public static boolean isOtherEvent(final InventoryClickEvent event) {
+        Preconditions.checkNotNull(event, "event cannot be null");
+
+        final Inventory inventory = event.getInventory();
+        final Inventory clickedInventory = event.getClickedInventory();
+        final InventoryAction action = event.getAction();
+
+        return isOtherAction(action)
+                && (clickedInventory != null || inventory.getType() != InventoryType.PLAYER);
+    }
+
+    public static boolean isDraggingOnGui(final InventoryDragEvent event) {
+        final int topSlots = event.getView().getTopInventory().getSize();
+        return event.getRawSlots().stream().anyMatch(slot -> slot < topSlots);
+    }
+
+    public static boolean isTakeAction(final InventoryAction action) {
+        return ITEM_TAKE_ACTIONS.contains(action);
+    }
+
+    public static boolean isPlaceAction(final InventoryAction action) {
+        return ITEM_PLACE_ACTIONS.contains(action);
+    }
+
+    public static boolean isSwapAction(final InventoryAction action) {
+        return ITEM_SWAP_ACTIONS.contains(action);
+    }
+
+    public static boolean isDropAction(final InventoryAction action) {
+        return ITEM_DROP_ACTIONS.contains(action);
+    }
+
+    public static boolean isOtherAction(final InventoryAction action) {
+        return action == InventoryAction.CLONE_STACK || action == InventoryAction.UNKNOWN;
+    }
+
+    private static final Set<InventoryAction> ITEM_TAKE_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.PICKUP_ONE, InventoryAction.PICKUP_SOME, InventoryAction.PICKUP_HALF, InventoryAction.PICKUP_ALL, InventoryAction.COLLECT_TO_CURSOR, InventoryAction.HOTBAR_SWAP, InventoryAction.MOVE_TO_OTHER_INVENTORY));
+
+    private static final Set<InventoryAction> ITEM_PLACE_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.PLACE_ONE, InventoryAction.PLACE_SOME, InventoryAction.PLACE_ALL));
+
+    private static final Set<InventoryAction> ITEM_SWAP_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.HOTBAR_SWAP, InventoryAction.SWAP_WITH_CURSOR, InventoryAction.HOTBAR_MOVE_AND_READD));
+
+    private static final Set<InventoryAction> ITEM_DROP_ACTIONS = Collections.unmodifiableSet(EnumSet.of(InventoryAction.DROP_ONE_SLOT, InventoryAction.DROP_ALL_SLOT, InventoryAction.DROP_ONE_CURSOR, InventoryAction.DROP_ALL_CURSOR));
 }
