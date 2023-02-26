@@ -77,4 +77,12 @@ public class NumberUtils {
 
         return 0;
     }
+
+    public static int parseOrDefault(String value, int def) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return def;
+        }
+    }
 }
