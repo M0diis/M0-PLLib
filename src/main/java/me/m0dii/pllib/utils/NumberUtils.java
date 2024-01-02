@@ -27,7 +27,7 @@ public class NumberUtils {
         return formatter.format(db);
     }
 
-    private String formatBigDecimal(@Nullable BigDecimal b) {
+    public static String formatBigDecimal(@Nullable BigDecimal b) {
         if(b == null) {
             return "";
         }
