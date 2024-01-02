@@ -1,5 +1,9 @@
 package me.m0dii.pllib.utils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Random;
@@ -9,23 +13,45 @@ public class NumberUtils {
 
     private static final NumberFormat formatter = new DecimalFormat("#0.00");
 
-    public static String formatDouble(double db) {
-        return formatter.format(db);
+    public static String formatDouble(@Nullable Double db) {
+        return db == null ? "" : formatter.format(db);
     }
 
-    public static String formatDouble(double db, String format) {
+    public static String formatDouble(@Nullable Double db, @NotNull String format) {
+        if(db == null) {
+            return "";
+        }
+
         final NumberFormat formatter = new DecimalFormat(format);
 
         return formatter.format(db);
     }
 
-    public static String formatDouble(double db, int decimalPlaces) {
+    private String formatBigDecimal(@Nullable BigDecimal b) {
+        if(b == null) {
+            return "";
+        }
+
+        DecimalFormat df = new DecimalFormat();
+
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(0);
+        df.setGroupingUsed(false);
+
+        return df.format(b);
+    }
+
+    public static String formatDouble(@Nullable Double db, int decimalPlaces) {
+        if(db == null) {
+            return "";
+        }
+
         final NumberFormat formatter = new DecimalFormat("#0." + "0".repeat(decimalPlaces));
 
         return formatter.format(db);
     }
 
-    public static boolean isDigit(String text) {
+    public static boolean isDigit(@Nullable String text) {
         if (text == null || text.isEmpty()) {
             return false;
         }

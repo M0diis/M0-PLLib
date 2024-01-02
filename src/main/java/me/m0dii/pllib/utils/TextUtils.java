@@ -17,6 +17,10 @@ public class TextUtils {
         return ChatColor.stripColor(PlainTextComponentSerializer.plainText().serializeOr(component, ""));
     }
 
+    public static String stripColor(String text) {
+        return ChatColor.stripColor(text);
+    }
+
     public static TextComponent colorize(String text) {
         if (text == null || text.isEmpty()) {
             return Component.empty();
