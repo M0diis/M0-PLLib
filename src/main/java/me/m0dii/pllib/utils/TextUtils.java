@@ -114,4 +114,30 @@ public class TextUtils {
 
         return format(text);
     }
+
+    public static List<String> splitTextToLines(String message, int maxWordsInLine) {
+        StringBuilder sb = new StringBuilder();
+
+        String[] words = message.split(" ");
+
+        List<String> lines = new ArrayList<>();
+
+        for (int i = 0; i < words.length; i++) {
+            if (i % maxWordsInLine == 0 && i != 0) {
+                lines.add(sb.toString());
+
+                sb = new StringBuilder();
+            }
+
+            sb.append(words[i]).append(" ");
+        }
+
+        lines.add(sb.toString().trim());
+
+        return lines;
+    }
+
+    public static List<String> splitTextToLines(String message) {
+        return splitTextToLines(message, 6);
+    }
 }
