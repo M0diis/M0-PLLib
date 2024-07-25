@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'me.m0dii'
-version '1.2.1'
+version '1.2.5'
 
 archivesBaseName = 'M0-PLLib'
 
@@ -23,7 +23,7 @@ repositories {
     }
 
     maven {
-        url = uri("https://repo.papermc.io/repository/maven-public/")
+        url = 'https://repo.papermc.io/repository/maven-public/'
     }
 
     maven {
@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
+    compileOnly 'io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT'
 }
 
 compileJava.options.encoding = 'UTF-8'

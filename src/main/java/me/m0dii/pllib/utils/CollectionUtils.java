@@ -1,6 +1,6 @@
 package me.m0dii.pllib.utils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,17 +9,17 @@ import java.util.stream.Stream;
 public class CollectionUtils {
     public static <T> T getRandomElement(Collection<T> collection) {
         return collection.stream()
-                .skip((int) (Math.random()*collection.size()))
+                .skip((int) (Math.random() * collection.size()))
                 .findFirst()
                 .orElse(null);
     }
 
     public static <T> T getRandomElement(T[] t) {
-        return t[(int) (Math.random()*t.length)];
+        return t[(int) (Math.random() * t.length)];
     }
 
     public static List<String> addStarting(List<String> list, String toMatch, String... toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
@@ -29,7 +29,7 @@ public class CollectionUtils {
     }
 
     public static List<String> addEnding(List<String> list, String toMatch, String... toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
@@ -39,7 +39,7 @@ public class CollectionUtils {
     }
 
     public static List<String> addMatching(List<String> list, String toMatch, String... toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
@@ -49,7 +49,7 @@ public class CollectionUtils {
     }
 
     public static List<String> addContaining(List<String> list, String toMatch, String... toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
@@ -59,7 +59,7 @@ public class CollectionUtils {
     }
 
     public static List<String> addStarting(List<String> list, String toMatch, List<String> toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
@@ -69,7 +69,7 @@ public class CollectionUtils {
     }
 
     public static List<String> addEnding(List<String> list, String toMatch, List<String> toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
@@ -79,7 +79,7 @@ public class CollectionUtils {
     }
 
     public static List<String> addMatching(List<String> list, String toMatch, List<String> toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
@@ -89,7 +89,7 @@ public class CollectionUtils {
     }
 
     public static List<String> addContaining(List<String> list, String toMatch, List<String> toAdd) {
-        if(list == null || toMatch == null || toAdd == null) {
+        if (list == null || toMatch == null || toAdd == null) {
             return list;
         }
 
