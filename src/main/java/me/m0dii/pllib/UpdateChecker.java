@@ -2,11 +2,12 @@ package me.m0dii.pllib;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Consumer;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class UpdateChecker {
     private final JavaPlugin plugin;
@@ -17,7 +18,7 @@ public class UpdateChecker {
         this.resourceId = resourceId;
     }
 
-    public void getVersion(final Consumer<String> consumer) {
+    public void getVersion(@NotNull final Consumer<String> consumer) {
         Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () ->
         {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId)
@@ -34,7 +35,7 @@ public class UpdateChecker {
         });
     }
 
-    public void isOutdated(final Consumer<Boolean> consumer) {
+    public void isOutdated(@NotNull final Consumer<Boolean> consumer) {
         getVersion(version ->
         {
             String curr = plugin.getDescription().getVersion();
@@ -49,7 +50,7 @@ public class UpdateChecker {
 
     public void download() {
         try {
-            String url = "https://api.spiget.org/v2/resources/ "  + resourceId + " /download";
+            String url = "https://api.spiget.org/v2/resources/ " + resourceId + " /download";
             URL url1 = new URL(url);
             BufferedInputStream in = new BufferedInputStream(url1.openStream());
             FileOutputStream fileOutputStream = new FileOutputStream("plugins" + File.separator + plugin.getName() + ".jar");
