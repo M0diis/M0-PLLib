@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class TextUtils {
@@ -53,6 +54,53 @@ public class TextUtils {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(text)
                 .asComponent()
                 .decoration(TextDecoration.ITALIC, false);
+    }
+
+    private static final Map<String, Character> SMALL_CAPS_MAP = Map.ofEntries(
+            Map.entry("a", 'ᴀ'),
+            Map.entry("b", 'ʙ'),
+            Map.entry("c", 'ᴄ'),
+            Map.entry("d", 'ᴅ'),
+            Map.entry("e", 'ᴇ'),
+            Map.entry("f", 'ғ'),
+            Map.entry("g", 'ɢ'),
+            Map.entry("h", 'ʜ'),
+            Map.entry("i", 'ɪ'),
+            Map.entry("j", 'ᴊ'),
+            Map.entry("k", 'ᴋ'),
+            Map.entry("l", 'ʟ'),
+            Map.entry("m", 'ᴍ'),
+            Map.entry("n", 'ɴ'),
+            Map.entry("o", 'ᴏ'),
+            Map.entry("p", 'ᴘ'),
+            Map.entry("q", 'ǫ'),
+            Map.entry("r", 'ʀ'),
+            Map.entry("s", 's'),
+            Map.entry("t", 'ᴛ'),
+            Map.entry("u", 'ᴜ'),
+            Map.entry("v", 'ᴠ'),
+            Map.entry("w", 'ᴡ'),
+            Map.entry("x", 'x'),
+            Map.entry("y", 'ʏ'),
+            Map.entry("z", 'ᴢ')
+    );
+
+    public static String smallCaps(String text) {
+        if (text == null || text.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (char c : text.toCharArray()) {
+            String lowerC = String.valueOf(c).toLowerCase();
+            if (SMALL_CAPS_MAP.containsKey(lowerC)) {
+                sb.append(SMALL_CAPS_MAP.get(lowerC));
+            } else {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
     }
 
     public static ItemMeta displayName(ItemMeta meta, String text) {
@@ -102,7 +150,7 @@ public class TextUtils {
             lore = new ArrayList<>();
         }
 
-        if(lore != null) {
+        if (lore != null) {
             for (String s : text) {
                 lore.add(colorize(s));
             }
